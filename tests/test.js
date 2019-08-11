@@ -49,22 +49,22 @@ child.once('message', async message => {
 
     let start = Date.now();
     let result = await request('http://localhost:4000/', options);
-    checkDuration(start, Date.now(), 500);
+    checkDuration(start, Date.now(), 5);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/a', options);
-    checkDuration(start, Date.now(), 4100);
+    checkDuration(start, Date.now(), 4);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/b', options);
-    checkDuration(start, Date.now(), 8100);
+    checkDuration(start, Date.now(), 8);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/c', options);
-    checkDuration(start, Date.now(), 3100);
+    checkDuration(start, Date.now(), 3);
     checkResult(result);
 
     // testing POST
@@ -73,22 +73,22 @@ child.once('message', async message => {
 
     start = Date.now();
     result = await request('http://localhost:4000/', options);
-    checkDuration(start, Date.now(), 100);
+    checkDuration(start, Date.now(), 1);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/a', options);
-    checkDuration(start, Date.now(), 100);
+    checkDuration(start, Date.now(), 1);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/b', options);
-    checkDuration(start, Date.now(), 100);
+    checkDuration(start, Date.now(), 1);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/c', options);
-    checkDuration(start, Date.now(), 3100);
+    checkDuration(start, Date.now(), 3);
     checkResult(result);
 
     // testing good_user
@@ -97,7 +97,7 @@ child.once('message', async message => {
 
     start = Date.now();
     result = await request('http://localhost:4000/d', options);
-    checkDuration(start, Date.now(), 100);
+    checkDuration(start, Date.now(), 1);
     checkResult(result);
 
     // testing bad_user
@@ -106,7 +106,7 @@ child.once('message', async message => {
 
     start = Date.now();
     result = await request('http://localhost:4000/d', options);
-    checkDuration(start, Date.now(), 10100);
+    checkDuration(start, Date.now(), 1);
     checkResult(result);
 
     console.log('🎉 success');

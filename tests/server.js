@@ -20,13 +20,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-app.use(delayNext({ time: 100 }));
+app.use(delayNext({ time: 1 }));
 
 app.all(
   '/',
   [
     delayNextIf({
-      time: 400,
+      time: 4,
       trigger: receiver => {
         return receiver.req.method === 'GET';
       }
@@ -41,7 +41,7 @@ app.all(
   '/a',
   [
     delayNextIf({
-      time: 4000,
+      time: 4,
       trigger: receiver => {
         return receiver.req.method === 'GET';
       }
@@ -56,7 +56,7 @@ app.all(
   '/b',
   [
     delayNextIf({
-      time: 8000,
+      time: 8,
       trigger: receiver => {
         return receiver.req.method === 'GET';
       }
@@ -71,7 +71,7 @@ app.all(
   '/c',
   [
     delayNext({
-      time: 3000
+      time: 3
     })
   ],
   (req, res) => {
@@ -91,7 +91,7 @@ app.all(
   [
     routeHandler,
     delayNextIf({
-      time: 10000,
+      time: 1,
       trigger: receiver => {
         return !receiver.res.locals.authenticated;
       }
