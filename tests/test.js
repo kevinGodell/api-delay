@@ -44,7 +44,7 @@ child.once('message', async message => {
   const { status = 'fail', port } = message;
 
   if (status !== 'running') {
-    console.error({ status });
+    console.error('status', { status });
     process.exit(1);
   }
 
@@ -53,10 +53,14 @@ child.once('message', async message => {
 
     // testing GET
 
+    console.log('get');
+
     let start = Date.now();
     let result = await request('http://localhost:4000/', options);
     checkDuration(start, Date.now(), 5);
     checkResult(result);
+
+    console.log('get2');
 
     start = Date.now();
     result = await request('http://localhost:4000/a', options);
