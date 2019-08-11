@@ -15,5 +15,9 @@
 ```
 npm install api-delay
 ```
+#### Testing
+```
+npm test
+```
 #### Usage
-see [docs](https://kevingodell.github.io/api-delay/module-api-delay.html)
+See usage in [docs](https://kevingodell.github.io/api-delay/module-api-delay.html), [examples](https://github.com/kevinGodell/api-delay/tree/master/examples/), and [tests](https://github.com/kevinGodell/api-delay/tree/master/tests/)
