@@ -20,4 +20,33 @@ npm install api-delay
 npm test
 ```
 #### Usage
-See usage in [docs](https://kevingodell.github.io/api-delay/module-api-delay.html), [examples](https://github.com/kevinGodell/api-delay/tree/master/examples/), and [tests](https://github.com/kevinGodell/api-delay/tree/master/tests/)
+```javascript
+'use strict';
+
+// create express app
+const app = require('express')();
+
+// get configurable middleware
+const { delayNext, delayNextIf } = require('api-delay');
+
+// will add a 200 millisecond delay in express request/response
+const middleWareDelay = delayNext({ time: 200 });
+
+// will add a 500 millisecond delay in express request/response if trigger function returns truthy
+const conditionalMiddleWareDelay = delayNextIf({
+  time: 500,
+  trigger: receiver => {
+    // if username is falsey, expression returns truthy to trigger delay
+    return !receiver.req.body.username;
+  }
+});
+
+// add as middleware to all routes
+app.use(middleWareDelay);
+
+// add as a handler to a specific route
+app.all('/somepath', [conditionalMiddleWareDelay], (req, res) => {
+  res.send('some_response');
+});
+```
+See more usage in [docs](https://kevingodell.github.io/api-delay/module-api-delay.html), [examples](https://github.com/kevinGodell/api-delay/tree/master/examples/), and [tests](https://github.com/kevinGodell/api-delay/tree/master/tests/)
