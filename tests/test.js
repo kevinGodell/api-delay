@@ -1,27 +1,106 @@
 'use strict';
 
-const { join } = require('path');
-
-const { fork } = require('child_process');
+const express = require('express');
+const app = express();
 
 const request = require('request-promise-native');
 
-const path = join(__dirname, './server.js');
+const { delayNext, delayNextIf } = require('../');
 
-console.log(path);
+// disable response header for privacy
+app.disable('x-powered-by');
 
-const params = [];
+// configure json response formatting
+app.set('json spaces', 2);
+app.set('json replacer', null);
 
-const options = {
-  detached: false,
-  stdio: ['ignore', 'inherit', 'ignore', 'ipc']
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.json());
+
+app.use(delayNext({ time: 1 }));
+
+app.all(
+  '/',
+  [
+    delayNextIf({
+      time: 4,
+      trigger: receiver => {
+        return receiver.req.method === 'GET';
+      }
+    })
+  ],
+  (req, res) => {
+    res.json({ message: 'success' });
+  }
+);
+
+app.all(
+  '/a',
+  [
+    delayNextIf({
+      time: 4,
+      trigger: receiver => {
+        return receiver.req.method === 'GET';
+      }
+    })
+  ],
+  (req, res) => {
+    res.json({ message: 'success' });
+  }
+);
+
+app.all(
+  '/b',
+  [
+    delayNextIf({
+      time: 8,
+      trigger: receiver => {
+        return receiver.req.method === 'GET';
+      }
+    })
+  ],
+  (req, res) => {
+    res.json({ message: 'success' });
+  }
+);
+
+app.all(
+  '/c',
+  [
+    delayNext({
+      time: 3
+    })
+  ],
+  (req, res) => {
+    res.json({ message: 'success' });
+  }
+);
+
+const routeHandler = (req, res, next) => {
+  if (req.body.username === 'good_user') {
+    res.locals.authenticated = true;
+  }
+  next();
 };
 
-const child = fork(path, params, options);
+app.all(
+  '/d',
+  [
+    routeHandler,
+    delayNextIf({
+      time: 1,
+      trigger: receiver => {
+        return !receiver.res.locals.authenticated;
+      }
+    })
+  ],
+  (req, res) => {
+    res.json({ message: 'success' });
+  }
+);
 
-child.once('error', err => {
-  console.log('error', err);
-});
+const port = 4000;
 
 const checkResult = result => {
   const { message } = result;
@@ -38,15 +117,8 @@ const checkDuration = (start, finish, minimum) => {
   console.log(`✅ duration: ${duration}, minimum: ${minimum}`);
 };
 
-child.once('message', async message => {
-  console.log('message', message);
-
-  const { status = 'fail', port } = message;
-
-  if (status !== 'running') {
-    console.error('status', { status });
-    process.exit(1);
-  }
+const server = app.listen(port, async () => {
+  console.log(`Server started on http://localhost:${port}`);
 
   try {
     const options = { json: true, method: 'GET', headers: { Connection: 'keep-alive' } };
