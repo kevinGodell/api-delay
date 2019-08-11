@@ -19,6 +19,10 @@ const options = {
 
 const child = fork(path, params, options);
 
+child.once('error', err => {
+  console.log('error', err);
+});
+
 const checkResult = result => {
   const { message } = result;
   if (message !== 'success') {
@@ -35,6 +39,8 @@ const checkDuration = (start, finish, minimum) => {
 };
 
 child.once('message', async message => {
+  console.log('message', message);
+
   const { status = 'fail', port } = message;
 
   if (status !== 'running') {
