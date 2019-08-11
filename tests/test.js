@@ -1,106 +1,21 @@
 'use strict';
 
-const express = require('express');
-const app = express();
+const { join } = require('path');
+
+const { fork } = require('child_process');
 
 const request = require('request-promise-native');
 
-const { delayNext, delayNextIf } = require('../');
+const path = join(__dirname, './server.js');
 
-// disable response header for privacy
-app.disable('x-powered-by');
+const params = [];
 
-// configure json response formatting
-app.set('json spaces', 2);
-app.set('json replacer', null);
-
-app.use(express.urlencoded({ extended: true }));
-
-app.use(express.json());
-
-app.use(delayNext({ time: 1 }));
-
-app.all(
-  '/',
-  [
-    delayNextIf({
-      time: 4,
-      trigger: receiver => {
-        return receiver.req.method === 'GET';
-      }
-    })
-  ],
-  (req, res) => {
-    res.json({ message: 'success' });
-  }
-);
-
-app.all(
-  '/a',
-  [
-    delayNextIf({
-      time: 4,
-      trigger: receiver => {
-        return receiver.req.method === 'GET';
-      }
-    })
-  ],
-  (req, res) => {
-    res.json({ message: 'success' });
-  }
-);
-
-app.all(
-  '/b',
-  [
-    delayNextIf({
-      time: 8,
-      trigger: receiver => {
-        return receiver.req.method === 'GET';
-      }
-    })
-  ],
-  (req, res) => {
-    res.json({ message: 'success' });
-  }
-);
-
-app.all(
-  '/c',
-  [
-    delayNext({
-      time: 3
-    })
-  ],
-  (req, res) => {
-    res.json({ message: 'success' });
-  }
-);
-
-const routeHandler = (req, res, next) => {
-  if (req.body.username === 'good_user') {
-    res.locals.authenticated = true;
-  }
-  next();
+const options = {
+  detached: false,
+  stdio: ['ignore', 'inherit', 'inherit', 'ipc']
 };
 
-app.all(
-  '/d',
-  [
-    routeHandler,
-    delayNextIf({
-      time: 1,
-      trigger: receiver => {
-        return !receiver.res.locals.authenticated;
-      }
-    })
-  ],
-  (req, res) => {
-    res.json({ message: 'success' });
-  }
-);
-
-const port = 4000;
+const child = fork(path, params, options);
 
 const checkResult = result => {
   const { message } = result;
@@ -117,36 +32,37 @@ const checkDuration = (start, finish, minimum) => {
   console.log(`✅ duration: ${duration}, minimum: ${minimum}`);
 };
 
-const server = app.listen(port, async () => {
-  console.log(`Server started on http://localhost:${port}`);
+child.once('message', async message => {
+  const { status = 'fail', port } = message;
+
+  if (status !== 'running') {
+    console.error({ status });
+    process.exit(1);
+  }
 
   try {
-    const options = { json: true, method: 'GET', headers: { Connection: 'keep-alive' } };
+    const options = { json: true, method: 'GET' };
 
     // testing GET
 
-    console.log('get');
-
     let start = Date.now();
     let result = await request('http://localhost:4000/', options);
-    checkDuration(start, Date.now(), 5);
+    checkDuration(start, Date.now(), 500);
     checkResult(result);
-
-    console.log('get2');
 
     start = Date.now();
     result = await request('http://localhost:4000/a', options);
-    checkDuration(start, Date.now(), 4);
+    checkDuration(start, Date.now(), 4100);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/b', options);
-    checkDuration(start, Date.now(), 8);
+    checkDuration(start, Date.now(), 8100);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/c', options);
-    checkDuration(start, Date.now(), 3);
+    checkDuration(start, Date.now(), 3100);
     checkResult(result);
 
     // testing POST
@@ -155,22 +71,22 @@ const server = app.listen(port, async () => {
 
     start = Date.now();
     result = await request('http://localhost:4000/', options);
-    checkDuration(start, Date.now(), 1);
+    checkDuration(start, Date.now(), 100);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/a', options);
-    checkDuration(start, Date.now(), 1);
+    checkDuration(start, Date.now(), 100);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/b', options);
-    checkDuration(start, Date.now(), 1);
+    checkDuration(start, Date.now(), 100);
     checkResult(result);
 
     start = Date.now();
     result = await request('http://localhost:4000/c', options);
-    checkDuration(start, Date.now(), 3);
+    checkDuration(start, Date.now(), 3100);
     checkResult(result);
 
     // testing good_user
@@ -179,7 +95,7 @@ const server = app.listen(port, async () => {
 
     start = Date.now();
     result = await request('http://localhost:4000/d', options);
-    checkDuration(start, Date.now(), 1);
+    checkDuration(start, Date.now(), 100);
     checkResult(result);
 
     // testing bad_user
@@ -188,13 +104,13 @@ const server = app.listen(port, async () => {
 
     start = Date.now();
     result = await request('http://localhost:4000/d', options);
-    checkDuration(start, Date.now(), 1);
+    checkDuration(start, Date.now(), 10100);
     checkResult(result);
 
     console.log('🎉 success');
     process.exit(0);
   } catch (e) {
-    console.error(`${e}`);
+    console.error(`${e.message}`);
     process.exit(1);
   }
 });

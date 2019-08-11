@@ -20,13 +20,13 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-app.use(delayNext({ time: 1 }));
+app.use(delayNext({ time: 100 }));
 
 app.all(
   '/',
   [
     delayNextIf({
-      time: 4,
+      time: 400,
       trigger: receiver => {
         return receiver.req.method === 'GET';
       }
@@ -41,7 +41,7 @@ app.all(
   '/a',
   [
     delayNextIf({
-      time: 4,
+      time: 4000,
       trigger: receiver => {
         return receiver.req.method === 'GET';
       }
@@ -56,7 +56,7 @@ app.all(
   '/b',
   [
     delayNextIf({
-      time: 8,
+      time: 8000,
       trigger: receiver => {
         return receiver.req.method === 'GET';
       }
@@ -71,7 +71,7 @@ app.all(
   '/c',
   [
     delayNext({
-      time: 3
+      time: 3000
     })
   ],
   (req, res) => {
@@ -91,7 +91,7 @@ app.all(
   [
     routeHandler,
     delayNextIf({
-      time: 1,
+      time: 10000,
       trigger: receiver => {
         return !receiver.res.locals.authenticated;
       }
@@ -104,9 +104,7 @@ app.all(
 
 const port = 4000;
 
-const server = app.listen(port, () => {
+app.listen(port, () => {
   console.log(`Server started on http://localhost:${port}`);
   if (forked) process.send({ status: 'running', port });
 });
-
-server.setTimeout(500000);
