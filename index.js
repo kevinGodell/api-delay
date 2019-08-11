@@ -92,9 +92,9 @@ const delayNext = options => {
 
 /**
  * @description Creates a middleware or route handler function that delays the call to next() if trigger function returns a truthy value.
- * @param {object} [options] - Configuration options
+ * @param {object} options - Configuration options
  * @param {number} [options.time=1] - Milliseconds to wait to call next().
- * @param {Trigger} [options.trigger] - Trigger function is called with a single argument as an object containing request and response properties. If it returns a truthy value, it will trigger the delayed call to next().<br/> see [Trigger](#~Trigger)
+ * @param {Trigger} options.trigger - Trigger function is called with a single argument as an object containing request and response properties. If it returns a truthy value, it will trigger the delayed call to next().<br/> see [Trigger](#~Trigger)
  * @returns {Function} A function that can be used as app middleware or route handler structured as:
  * ```
  * (req, res, next) => {
@@ -104,21 +104,27 @@ const delayNext = options => {
  * ```
  */
 const delayNextIf = options => {
+  // protect against bad options, throw error
+
+  if (!options || typeof options.trigger !== 'function') {
+    throw new TypeError('options.trigger must be a function');
+  }
+
   return (req, res, next) => {
-    if (options.trigger({ req, res })) {
-      const _onClose = () => clearTimeout(_setTimeout);
-
-      const _onSetTimeout = () => {
-        res.removeListener('close', _onClose);
-        next();
-      };
-
-      const _setTimeout = setTimeout(_onSetTimeout, options.time);
-
-      res.once('close', _onClose);
-    } else {
-      next();
+    if (!options.trigger({ req, res })) {
+      return next();
     }
+
+    const _onClose = () => clearTimeout(_setTimeout);
+
+    const _onSetTimeout = () => {
+      res.removeListener('close', _onClose);
+      next();
+    };
+
+    const _setTimeout = setTimeout(_onSetTimeout, options.time);
+
+    res.once('close', _onClose);
   };
 };
 
