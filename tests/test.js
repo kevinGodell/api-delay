@@ -4,6 +4,8 @@ const { join } = require('path');
 
 const { fork } = require('child_process');
 
+const assert = require('assert');
+
 const request = require('request-promise-native');
 
 const path = join(__dirname, './server.js');
@@ -26,10 +28,8 @@ const checkResult = result => {
 
 const checkDuration = (start, finish, minimum) => {
   const duration = finish - start;
-  if (duration < minimum) {
-    throw new Error(`❌ duration: ${duration}, minimum: ${minimum}`);
-  }
-  console.log(`✅ duration: ${duration}, minimum: ${minimum}`);
+  assert(duration >= minimum, `❌ duration: ${duration} < minimum: ${minimum}`);
+  console.log(`✅ duration: ${duration} >= minimum: ${minimum}`);
 };
 
 child.once('message', async message => {
