@@ -24,7 +24,9 @@
     "handler",
     "next",
     "delay",
-    "setTimeout"
+    "setTimeout",
+    "request",
+    "response"
   ],
   "author": "Kevin Godell <kevin.godell@gmail.com> (https://kevingodell.com)",
   "license": "MIT",
