@@ -20,6 +20,20 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
+const assert = require('assert');
+
+assert.throws(() => {
+  delayNextIf();
+}, /TypeError: options.trigger must be a function/);
+
+assert.throws(() => {
+  delayNextIf({ time: 1 });
+}, /TypeError: options.trigger must be a function/);
+
+assert.throws(() => {
+  delayNextIf({ time: 1, trigger: 123 });
+}, /TypeError: options.trigger must be a function/);
+
 app.use(delayNext({ time: 100 }));
 
 app.all(
