@@ -49,7 +49,7 @@ child.once('message', async message => {
   }
 
   try {
-    const options = { json: true, method: 'GET' };
+    const options = { json: true, method: 'GET', headers: { Connection: 'keep-alive' } };
 
     // testing GET
 
