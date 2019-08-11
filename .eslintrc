@@ -5,6 +5,7 @@
   ],
   "rules": {
     "prettier/prettier": "error",
+    "require-jsdoc": "error",
     "valid-jsdoc": "error"
   },
   "extends": [
