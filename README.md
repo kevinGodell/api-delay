@@ -8,11 +8,11 @@
 - Creates a function that can be used as app middleware or a route handler.
 - Set the time and trigger options to customize the delayed call to next().
 #### When?
-- [delayNext](#~delayNext) will always **delay** the call to **next**().
-- [delayNextIf](#~delayNextIf) will only **delay** the call to **next**() **if** [Trigger](#~Trigger) returns a truthy value.
+- [delayNext](https://kevingodell.github.io/api-delay/#~delayNext) will always **delay** the call to **next**().
+- [delayNextIf](https://kevingodell.github.io/api-delay/#~delayNextIf) will only **delay** the call to **next**() **if** [Trigger](https://kevingodell.github.io/api-delay/#~Trigger) returns a truthy value.
 #### Installation
 ```
 npm install api-delay
 ```
 #### Usage
-see [docs](https://kevingodell.github.io/pam-diff/PamDiff.html)
+see [docs](https://kevingodell.github.io/api-delay/)
