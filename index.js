@@ -92,6 +92,7 @@ const delayNext = options => {
 
 /**
  * @description Creates a middleware or route handler function that delays the call to next() if trigger function returns a truthy value.
+ * @throws {TypeError} - options.trigger must be a function
  * @param {object} options - Configuration options
  * @param {number} [options.time=1] - Milliseconds to wait to call next().
  * @param {Trigger} options.trigger - Trigger function is called with a single argument as an object containing request and response properties. If it returns a truthy value, it will trigger the delayed call to next().<br/> see [Trigger](#~Trigger)
