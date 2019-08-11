@@ -122,7 +122,7 @@ child.once('message', async message => {
     console.log('🎉 success');
     process.exit(0);
   } catch (e) {
-    console.error(`${e.message}`);
+    console.error(`${e}`);
     process.exit(1);
   }
 });
