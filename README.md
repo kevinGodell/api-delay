@@ -15,4 +15,4 @@
 npm install api-delay
 ```
 #### Usage
-see [docs](https://kevingodell.github.io/api-delay/)
+see [docs](https://kevingodell.github.io/api-delay/module-api-delay.html)
