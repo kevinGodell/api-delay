@@ -104,7 +104,9 @@ app.all(
 
 const port = 4000;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server started on http://localhost:${port}`);
   if (forked) process.send({ status: 'running', port });
 });
+
+server.setTimeout(500000);
