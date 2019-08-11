@@ -1,0 +1,52 @@
+{
+  "name": "api-delay",
+  "version": "0.1.0",
+  "description": "Deliberately cause a delayed http response in an express app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests/test.js",
+    "dev": "nodemon ./examples/app.js",
+    "preversion": "npm run lint && npm test",
+    "postversion": "npm run doc",
+    "pack": "npm --verbose pack",
+    "jsdoc": "jsdoc -c .jsdocrc",
+    "doc": "npm run jsdoc && git add docs && git commit --allow-empty -m \"update docs\" -- docs",
+    "lint": "eslint --fix ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinGodell/api-delay.git"
+  },
+  "keywords": [
+    "express",
+    "middleware",
+    "route",
+    "handler",
+    "next",
+    "delay",
+    "setTimeout"
+  ],
+  "author": "Kevin Godell <kevin.godell@gmail.com> (https://kevingodell.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kevinGodell/api-delay/issues"
+  },
+  "homepage": "https://github.com/kevinGodell/api-delay#readme",
+  "devDependencies": {
+    "eslint": "^6.1.0",
+    "eslint-config-jsdoc": "^15.4.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-jsdoc": "^15.8.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "express": "^4.17.1",
+    "jsdoc": "^3.6.3",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  },
+  "files": [
+    "index.js"
+  ],
+  "private": true
+}

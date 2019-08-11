@@ -1,0 +1,22 @@
+{
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "source": {
+    "include": ["."],
+    "exclude": ["node_modules", "docs", "examples", "tests"],
+    "includePattern": ".js$"
+  },
+  "opts": {
+    "destination": "./docs/",
+    "verbose": true,
+    "readme": "./README.md",
+    "recurse": true
+  },
+  "templates": {
+    "default": {
+      "outputSourceFiles": false,
+      "includeDate": true
+    }
+  }
+}

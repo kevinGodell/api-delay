@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    "prettier",
+    "jsdoc"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "valid-jsdoc": "error"
+  },
+  "extends": [
+    "plugin:prettier/recommended",
+    "plugin:jsdoc/recommended"
+  ],
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 8
+  }
+}
