@@ -2,7 +2,7 @@
 
 /**
  * @description ### api-delay
- * @example
+ * @example <caption>Example usage for adding delay using middleware and route handlers:</caption>
  * //create express app
  * const express = require('express');
  * const app = express();
@@ -11,7 +11,7 @@
  * const { delayNext, delayNextIf } = require('api-delay');
  *
  * // add a middleware delay to all routes
- * app.use(delayNext({time: 200}));
+ * app.use(delayNext({ time: 200 }));
  *
  * // add a conditional middleware delay to all routes
  * app.use(
