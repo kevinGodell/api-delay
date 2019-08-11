@@ -1,4 +1,5 @@
 # api-delay
+###### [![Build Status](https://travis-ci.org/kevinGodell/api-delay.svg?branch=master)](https://travis-ci.org/kevinGodell/api-delay) [![Build status](https://ci.appveyor.com/api/projects/status/1ca52luqybn9xm2t/branch/master?svg=true)](https://ci.appveyor.com/project/kevinGodell/api-delay/branch/master)
 #### What?
 - Deliberately cause a delayed http response in an express app.
 #### Why?
