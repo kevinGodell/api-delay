@@ -80,7 +80,7 @@ const delayNext = options => {
     const _onClose = () => clearTimeout(_setTimeout);
 
     const _onSetTimeout = () => {
-      res.off('close', _onClose);
+      res.removeListener('close', _onClose);
       next();
     };
 
@@ -109,7 +109,7 @@ const delayNextIf = options => {
       const _onClose = () => clearTimeout(_setTimeout);
 
       const _onSetTimeout = () => {
-        res.off('close', _onClose);
+        res.removeListener('close', _onClose);
         next();
       };
 
