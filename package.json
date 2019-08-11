@@ -10,7 +10,7 @@
     "postversion": "npm run doc",
     "pack": "npm --verbose pack",
     "jsdoc": "jsdoc -c .jsdocrc",
-    "doc": "npm run jsdoc && git add docs && git commit --allow-empty -m \"update docs\" -- docs",
+    "doc": "npm run jsdoc && git add docs && git commit -m \"docs: jsdoc generated\" -- docs",
     "lint": "eslint --fix ."
   },
   "repository": {
