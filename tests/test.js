@@ -46,22 +46,22 @@ child.once('message', async message => {
     // testing GET
 
     let start = Date.now();
-    let result = await request('http://localhost:4000/', options);
+    let result = await request(`http://localhost:${port}/`, options);
     checkDuration(start, Date.now(), 500);
     checkResult(result);
 
     start = Date.now();
-    result = await request('http://localhost:4000/a', options);
+    result = await request(`http://localhost:${port}/a`, options);
     checkDuration(start, Date.now(), 4100);
     checkResult(result);
 
     start = Date.now();
-    result = await request('http://localhost:4000/b', options);
+    result = await request(`http://localhost:${port}/b`, options);
     checkDuration(start, Date.now(), 8100);
     checkResult(result);
 
     start = Date.now();
-    result = await request('http://localhost:4000/c', options);
+    result = await request(`http://localhost:${port}/c`, options);
     checkDuration(start, Date.now(), 3100);
     checkResult(result);
 
@@ -70,22 +70,22 @@ child.once('message', async message => {
     options.method = 'POST';
 
     start = Date.now();
-    result = await request('http://localhost:4000/', options);
+    result = await request(`http://localhost:${port}/`, options);
     checkDuration(start, Date.now(), 100);
     checkResult(result);
 
     start = Date.now();
-    result = await request('http://localhost:4000/a', options);
+    result = await request(`http://localhost:${port}/a`, options);
     checkDuration(start, Date.now(), 100);
     checkResult(result);
 
     start = Date.now();
-    result = await request('http://localhost:4000/b', options);
+    result = await request(`http://localhost:${port}/b`, options);
     checkDuration(start, Date.now(), 100);
     checkResult(result);
 
     start = Date.now();
-    result = await request('http://localhost:4000/c', options);
+    result = await request(`http://localhost:${port}/c`, options);
     checkDuration(start, Date.now(), 3100);
     checkResult(result);
 
@@ -94,7 +94,7 @@ child.once('message', async message => {
     options.body = { username: 'good_user' };
 
     start = Date.now();
-    result = await request('http://localhost:4000/d', options);
+    result = await request(`http://localhost:${port}/d`, options);
     checkDuration(start, Date.now(), 100);
     checkResult(result);
 
@@ -103,7 +103,7 @@ child.once('message', async message => {
     options.body = { username: 'bad_user' };
 
     start = Date.now();
-    result = await request('http://localhost:4000/d', options);
+    result = await request(`http://localhost:${port}/d`, options);
     checkDuration(start, Date.now(), 10100);
     checkResult(result);
 
