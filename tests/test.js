@@ -29,9 +29,9 @@ const checkResult = result => {
 const checkDuration = (start, finish, minimum) => {
   const duration = finish - start;
   if (duration < minimum) {
-    throw new Error(`bad duration = ${duration}`);
+    throw new Error(`❌ duration: ${duration}, minimum: ${minimum}`);
   }
-  console.log(`duration: ${duration}, minimum: ${minimum}`);
+  console.log(`✅ duration: ${duration}, minimum: ${minimum}`);
 };
 
 child.once('message', async message => {
@@ -109,10 +109,10 @@ child.once('message', async message => {
     checkDuration(start, Date.now(), 10100);
     checkResult(result);
 
-    console.log('success');
+    console.log('🎉 success');
     process.exit(0);
   } catch (e) {
-    console.error(`request error: ${e.message}`);
+    console.error(`${e.message}`);
     process.exit(1);
   }
 });
